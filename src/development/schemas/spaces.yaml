@@ -1,0 +1,108 @@
+# These are the proposed schemas to introduce labels hierarchy for issues,
+# there could be issues in any hierarchy label, An issue would be 
+# rendered as a child of the greatest hierarchy label assigned to it.
+#
+# A new document would be needed in each repo to declare the hierarchy levels
+# of a single resource, or in a separate repo in an org to declare a global
+# hierarchy for all the repos in an organization.
+#
+# To create Labels in Gitea you need to fill three fields: name,
+# description and color. The first two are specially usefull for the
+# purpose of introducing these schemas.
+
+
+# SCHEMA OPTION 1 ("infinite" containers)
+#
+# An actual label would have this metadata in Gitea:
+#
+# label:
+#   name: cn/{slug-of-the-container}
+#   description: {Name of the container}
+#   color: {hex-color-code}
+#
+# The document to declare the schema would look like this:
+
+containers:
+  - name: crc
+    description: Cycle of Resource Creation
+    contains: 
+       - name: tit
+         description: Titus
+         contains: 
+           - name: step-1
+             description: Step 1
+             contains: ...
+           - name: step-2
+             description: Step 2
+             contains: ...
+           - name: step-3
+             description: Step 3
+             contains: ...
+           - name: step-4
+             description: Step 4
+             contains: ...
+           - name: step-5
+             description: Step 5
+             contains: ...
+           - name: step-6
+             description: Step 6
+             contains: ...
+           - name: step-7
+             description: Step 7
+             contains: ...
+           - name: step-8
+             description: Step 8
+             contains: ...
+       - name: 3jn
+         description: 3 John
+         contains: ...
+       - name: rut
+         description: Ruth
+         contains: ...
+
+
+# SCHEMA OPTION 2 (finite containers [spaces,projects,folders])
+#
+# An actual label would have any of these metadata in Gitea:
+#
+# name: space/{slug-of-the-space}
+# description: {Name of the space}
+# color: {hex-color-code}
+#
+# name: project/{slug-of-the-project}
+# description: {Name of the project}
+# color: {hex-color-code}
+#
+# name: folder/{slug-of-the-folder}
+# description: {Name of the folder}
+# color: {hex-color-code}
+
+spaces:
+  - name: crc
+    description: Cycle of Resource Creation
+    projects: 
+       - name: tit
+         description: Titus
+         folders: 
+           - name: step-1
+             description: Step 1
+           - name: step-2
+             description: Step 2
+           - name: step-3
+             description: Step 3
+           - name: step-4
+             description: Step 4
+           - name: step-5
+             description: Step 5
+           - name: step-6
+             description: Step 6
+           - name: step-7
+             description: Step 7
+           - name: step-8
+             description: Step 8
+       - name: 3jn
+         description: 3 John
+         folders: ...
+       - name: rut
+         description: Ruth
+         folders: ...
