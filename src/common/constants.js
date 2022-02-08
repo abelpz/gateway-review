@@ -1,7 +1,7 @@
 import packagefile from "../../package.json";
 
 export const APP_VERSION = packagefile.version;
-export const APP_NAME = "OBS - Revisión final";
+export const APP_NAME = "OBS-Review";
 export const BASE_URL = "https://git.door43.org";
 export const PASSWORD_RECOVERY_LINK =
   "https://git.door43.org/user/forgot_password";
