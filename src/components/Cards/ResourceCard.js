@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "translation-helps-rcl/dist/components";
 import { useCardState, useContent } from "translation-helps-rcl/dist/hooks";
 
-
 function ResourceCard({
+  cardRef,
   editable = false,
   selectedQuote,
   setQuote,
@@ -21,7 +21,6 @@ function ResourceCard({
   shouldSetQuoteOnClick = false,
   ...props
 }) {
-
   const {
     state: { item, headers, filters, fontSize, itemIndex, markdownView },
     actions: { setFilters, setFontSize, setItemIndex, setMarkdownView },
@@ -35,17 +34,33 @@ function ResourceCard({
 
   useEffect(() => {
     if (columnFilters) {
-      setFilters(columnFilters)
+      setFilters(columnFilters);
     }
-  }, [columnFilters, setFilters])
+  }, [columnFilters, setFilters]);
 
   useEffect(() => {
     if (shouldSetQuoteOnClick && item && setQuote) {
-      const { Quote, SupportReference, Occurrence, TWLink } = item;
-      console.log({ Quote, SupportReference, Occurrence, TWLink });
-      setQuote({ Quote, SupportReference, Occurrence });
+      const { Quote, SupportReference, Occurrence, TWLink, ID, filePath } =
+        item;
+      const quote = {
+        Quote,
+        SupportReference,
+        Occurrence,
+        TWLink,
+        ID,
+        filePath,
+      };
+      setQuote(
+        Object.keys(quote).reduce(
+          (prev, current) =>
+            !!quote[current]
+              ? { ...prev, [current]: quote[current] }
+              : { ...prev },
+          {}
+        )
+      );
     }
-  },[item, setQuote, shouldSetQuoteOnClick])
+  }, [item, setQuote, shouldSetQuoteOnClick]);
 
   const showSaveChangesPrompt = () => {
     return new Promise((resolve, reject) => {
@@ -54,11 +69,12 @@ function ResourceCard({
   };
 
   useEffect(() => {
-    if (onItemChange) onItemChange({itemIndex,item});
-  }, [itemIndex, onItemChange, setItemIndex,item]);
+    if (onItemChange) onItemChange({ itemIndex, item });
+  }, [itemIndex, onItemChange, setItemIndex, item]);
 
   return (
     <Card
+      dragRef={cardRef}
       items={items}
       title={title}
       headers={headers}

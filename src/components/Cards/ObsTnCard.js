@@ -1,8 +1,10 @@
+import Reviewer from "@libraries/review/components/Reviewer";
 import { use } from "i18next";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "translation-helps-rcl/dist/components";
 import { useCardState, useContent } from "translation-helps-rcl/dist/hooks";
 
+import useAppAuth from "@hooks/app/useAppAuth";
 import useFileContent from "@hooks/repos/useFileContent";
 
 import ResourceCard from "./ResourceCard";
@@ -18,7 +20,19 @@ function ObsTnCard({
   languageId,
   classes,
 }) {
+  const [auth] = useAppAuth();
+  const [cardRef, setCardRef] = useState(null);
+  const getRef = useCallback((node) => {
+    setCardRef(node);
+  }, []);
+  const repoName = resource.name.split("_");
   const path = "/tn_OBS.tsv";
+  const fields = {
+    id: selectedQuote?.ID,
+    link: `https://tcc-idiomaspuentes.netlify.app/pl/${
+      resource.owner.username
+    }/${repoName[0]}/${repoName[1] + path}?ID=${selectedQuote?.ID}`,
+  };
 
   const {
     file: content,
@@ -52,20 +66,30 @@ function ObsTnCard({
 
   return (
     !error && (
-      <ResourceCard
-        title={resource.title}
-        chapter={story}
-        verse={frame}
-        items={items}
-        selectedQuote={selectedQuote}
-        setQuote={setQuote}
-        onItemChange={onItemChange}
-        markdown={markdown}
-        languageId="es-419"
-        isLoading={isLoading}
-        classes={classes}
-        shouldSetQuoteOnClick
-      />
+      <>
+        <ResourceCard
+          cardRef={getRef}
+          title={resource.title}
+          chapter={story}
+          verse={frame}
+          items={items}
+          selectedQuote={selectedQuote}
+          setQuote={setQuote}
+          onItemChange={onItemChange}
+          markdown={markdown}
+          languageId="es-419"
+          isLoading={isLoading}
+          classes={classes}
+          shouldSetQuoteOnClick
+        />
+        <Reviewer
+          preppend="OBS-review"
+          fields={fields}
+          repo={resource}
+          target={cardRef}
+          authentication={auth}
+        />
+      </>
     )
   );
 }

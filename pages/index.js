@@ -31,7 +31,7 @@ import ObsWorkspace from "@components/ObsWorkspace";
 
 const Home = () => {
   const user = useAuthSession();
-  const token = useAppAuth();
+  const [auth] = useAppAuth();
   const [resources] = useAppResources();
   const { isError, isLoading, labels } = useLabels();
   const dispatch = useDispatch();
@@ -57,7 +57,7 @@ const Home = () => {
         <Button onClick={handleOnClickLabels}>Load labels</Button>
         <Button onClick={handleCreateSpace}>Create space</Button> */}
         <Paper sx={{w:"100%"}}>
-          <ObsWorkspace resources={resources}>
+          <ObsWorkspace resources={resources} authentication={auth}>
           </ObsWorkspace>
           {/* {isLoading ? (
             "loading..."

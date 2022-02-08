@@ -1,3 +1,5 @@
+import { unstable_ClassNameGenerator as ClassNameGenerator } from "@mui/material/utils";
+
 import { CacheProvider } from "@emotion/react";
 import i18n from "@locales/i18n";
 import "@styles/globals.css";
@@ -17,12 +19,15 @@ import store from "@store/index";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 
+ClassNameGenerator.configure((componentName) => `${TOKEN_ID}-${componentName}`);
+
 const clientSideEmotionCache = createEmotionCache();
+
 
 function MyApp(props) {
   const { locale } = useRouter();
   i18n.changeLanguage(locale).then(() => {
-    console.log("locale changed");
+    console.log("locale changed to " + locale);
   });
   store.subscribe(
     // we use debounce to save the state once each 800ms

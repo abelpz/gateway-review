@@ -33,18 +33,18 @@ function ResourcesForm() {
 
   const defaultResources = useMemo(
     () => [
-      "es-419_obs",
-      "es-419_obs-tn",
-      "es-419_obs-tq",
-      "es-419_obs-twl",
-      "es-419_ta",
-      "es-419_tw",
+      "obs",
+      "obs-tn",
+      "obs-tq",
+      "obs-twl",
+      "ta",
+      "tw",
     ],
     []
   );
   useEffect(() => {
     const reposList = repos?.filter((repo) =>
-      defaultResources.includes(repo.name)
+      defaultResources.includes(repo.name.split("_")[1])
     );
     console.log(reposList);
     if (!resources?.length && reposList) addResources(reposList);

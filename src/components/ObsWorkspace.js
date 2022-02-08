@@ -1,4 +1,8 @@
-import { createTheme, makeStyles } from "@material-ui/core/styles";
+import {
+  ThemeProvider,
+  createTheme,
+  makeStyles,
+} from "@material-ui/core/styles";
 import React, { useState } from "react";
 import Workspace from "resource-workspace-rcl/dist/components/Workspace";
 
@@ -9,8 +13,6 @@ import {
   Autocomplete,
   Box,
   Button,
-  IconButton,
-  Paper,
   TextField,
   Toolbar,
   Typography,
@@ -20,13 +22,14 @@ import ObsCard from "./Cards/ObsCard";
 import ObsTaCard from "./Cards/ObsTaCard";
 import ObsTnCard from "./Cards/ObsTnCard";
 import ObsTqCard from "./Cards/ObsTqCard";
-import useTwItems from "./Cards/useTwItems";
-import ObsTwlCard from "./Cards/ObsTwlCard";
 import ObsTwCard from "./Cards/ObsTwCard";
+import ObsTwlCard from "./Cards/ObsTwlCard";
+import useTwItems from "./Cards/useTwItems";
+import useLogout from "@hooks/useLogout";
 
 const workspaceTheme = createTheme({
   palette: {
-    mode: "light",
+    mode: "dark",
     primary: {
       main: "#3f51b5",
     },
@@ -72,12 +75,6 @@ function ObsWorkspace({ children, resources }) {
   const useAutoCompleteStyles = makeStyles(() => ({
     root: {
       maxWidth: "5rem",
-      "& .MuiAutocomplete-endAdornment": {
-        top: "4px",
-      },
-      "& .MuiIconButton-root": {
-        color: "#fff",
-      },
     },
   }));
   const AutoCompleteClasses = useAutoCompleteStyles();
@@ -100,14 +97,23 @@ function ObsWorkspace({ children, resources }) {
   const classes = useStyles();
 
   const { isLoading, isError, data } = useTwItems({
-    twlResource: resources.find((resource) => resource.name === "es-419_obs-twl"),
-    twResource: resources.find((resource) => resource.name === "es-419_tw"),
+    twlResource: resources.find(
+      (resource) => resource.name.split("_")[1] === "obs-twl"
+    ),
+    twResource: resources.find(
+      (resource) => resource.name.split("_")[1] === "tw"
+    ),
     story,
-    frame
+    frame,
   });
 
+  const logout = useLogout();
+  const handleOnClick = (e) => {
+    logout();
+  };
+
   return (
-    <>
+    <ThemeProvider theme={workspaceTheme}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6">{APP_NAME}</Typography>
@@ -131,6 +137,7 @@ function ObsWorkspace({ children, resources }) {
               disableClearable
             />
           </Box>
+          <Button onClick={handleOnClick}>Logout</Button>
         </Toolbar>
       </AppBar>
       <Workspace
@@ -165,7 +172,7 @@ function ObsWorkspace({ children, resources }) {
           story={story}
           frame={frame}
           resource={resources.find(
-            (resource) => resource.name === "es-419_obs"
+            (resource) => resource.name.split("_")[1] === "obs"
           )}
           classes={classes}
           onItemChange={onOBSChange}
@@ -176,7 +183,7 @@ function ObsWorkspace({ children, resources }) {
           setQuote={setQuote}
           selectedQuote={selectedQuote}
           resource={resources.find(
-            (resource) => resource.name === "es-419_obs-tn"
+            (resource) => resource.name.split("_")[1] === "obs-tn"
           )}
           classes={classes}
         />
@@ -185,10 +192,15 @@ function ObsWorkspace({ children, resources }) {
           frame={frame}
           setQuote={setQuote}
           selectedQuote={selectedQuote}
-          resource={resources.find((resource) => resource.name === "es-419_ta")}
+          resource={resources.find(
+            (resource) => resource.name.split("_")[1] === "ta"
+          )}
           classes={classes}
         />
         <ObsTwCard
+          resource={resources.find(
+            (resource) => resource.name.split("_")[1] === "tw"
+          )}
           items={data.tw.items}
           title={data.tw.title}
           story={story}
@@ -204,7 +216,7 @@ function ObsWorkspace({ children, resources }) {
           setQuote={setQuote}
           selectedQuote={selectedQuote}
           resource={resources.find(
-            (resource) => resource.name === "es-419_obs-tq"
+            (resource) => resource.name.split("_")[1] === "obs-tq"
           )}
           classes={classes}
         />
@@ -219,7 +231,7 @@ function ObsWorkspace({ children, resources }) {
           isLoading={isLoading}
         />
       </Workspace>
-    </>
+    </ThemeProvider>
   );
 }
 

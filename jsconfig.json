@@ -9,7 +9,8 @@
       "@common/*": ["src/common/*"],
       "@utils/*": ["src/utils/*"],
       "@store/*": ["src/store/*"],
-      "@locales/*": ["src/locales/*"]
+      "@locales/*": ["src/locales/*"],
+      "@libraries/*": ["src/libraries/*"]
     }
   }
 }
