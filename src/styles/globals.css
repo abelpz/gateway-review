@@ -1,4 +1,4 @@
-@import './resource-workspace-rcl.css';
+@import "./resource-workspace-rcl.css";
 html,
 body {
   padding: 0;
@@ -14,4 +14,12 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.gateway-review-MuiSelect-select {
+  height: auto !important;
+  min-height: 1.4375em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

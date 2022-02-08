@@ -25,6 +25,7 @@ import { settingsAdded } from "@store/slices/settings";
 import PersonIcon from "@mui/icons-material/Person";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import { Button, Checkbox, CircularProgress, FormControlLabel, InputAdornment, Link, Stack, TextField, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 
 /**
@@ -90,6 +91,11 @@ function AuthForm({ handleOnChange, ...props }) {
     dispatch(settingsAdded(newSettings));
   };
 
+  // const LoginField = styled(TextField)(({ theme }) => ({
+  //   marginTop: 8,
+  //   marginBottom: 8
+  // }));
+
   return (
     <>
       <SettingsForm
@@ -99,6 +105,7 @@ function AuthForm({ handleOnChange, ...props }) {
         errorMessage={t("Something went wrong, please try again.")}
       >
         <TextField
+          sx={{my:1}}
           required
           disabled={disabled}
           id="name"
@@ -121,6 +128,7 @@ function AuthForm({ handleOnChange, ...props }) {
           }}
         />
         <TextField
+          sx={{my:1}}
           required
           disabled={disabled}
           id="password"

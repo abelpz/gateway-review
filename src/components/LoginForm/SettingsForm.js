@@ -4,6 +4,7 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import usePrint from "@hooks/usePrint";
+import TOKEN_ID from "@common/constants"
 
 const SettingsForm = ({
   children,
@@ -27,7 +28,7 @@ const SettingsForm = ({
     >
       <Box
         sx={{
-          "& .MuiTextField-root": { my: 1 },
+          [`& .${TOKEN_ID}-MuiTextField-root`]: { my: 10 },
         }}
         noValidate
         autoComplete="off"

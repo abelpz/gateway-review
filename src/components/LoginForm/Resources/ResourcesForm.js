@@ -4,24 +4,26 @@ import PropTypes from "prop-types";
 import React, { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 
-
+import { TOKEN_ID } from "@common/constants";
 
 import SelectListItem from "@components/FormFields/SelectListItem";
 import SettingsForm from "@components/LoginForm/SettingsForm";
 
-
-
 import useAppResources from "@hooks/app/useAppResources";
 import useRepos from "@hooks/useRepos";
 
-
-
 import ClearIcon from "@mui/icons-material/Clear";
-import { Divider, FormControl, IconButton, List, ListSubheader, Paper } from "@mui/material";
+import {
+  Divider,
+  FormControl,
+  IconButton,
+  List,
+  ListSubheader,
+  Paper,
+} from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-
 
 function ResourcesForm() {
   const [resources, addResources, removeResource] = useAppResources();
@@ -32,14 +34,7 @@ function ResourcesForm() {
   const { repos, isLoading, isError } = useRepos(token, savedOrg.username);
 
   const defaultResources = useMemo(
-    () => [
-      "obs",
-      "obs-tn",
-      "obs-tq",
-      "obs-twl",
-      "ta",
-      "tw",
-    ],
+    () => ["obs", "obs-tn", "obs-tq", "obs-twl", "ta", "tw"],
     []
   );
   useEffect(() => {
@@ -69,6 +64,7 @@ function ResourcesForm() {
       <FormControl fullWidth>
         <Stack spacing={3}>
           <Autocomplete
+            sx={{display: "none"}}
             multiple
             value={resources?.filter(
               (resource) => resource.owner.id === savedOrg.id
@@ -124,15 +120,15 @@ function ResourcesForm() {
                 resource.owner.id === savedOrg.id && (
                   <SelectListItem
                     renderButton
-                    secondaryAction={
-                      <IconButton
-                        aria-label="delete"
-                        size="small"
-                        onClick={() => handleClearResource(resource.id)}
-                      >
-                        <ClearIcon fontSize="small" />
-                      </IconButton>
-                    }
+                    // secondaryAction={
+                    //   <IconButton
+                    //     aria-label="delete"
+                    //     size="small"
+                    //     onClick={() => handleClearResource(resource.id)}
+                    //   >
+                    //     <ClearIcon fontSize="small" />
+                    //   </IconButton>
+                    // }
                     disablePadding
                     key={"selected-resource-" + resource.id}
                     avatar={{

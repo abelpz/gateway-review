@@ -3,29 +3,20 @@ import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
-
-
 import { APP_NAME as appName } from "@common/constants";
-
-
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { Container, Grid, Paper, StepButton } from "@mui/material";
-import Box from "@mui/material/Box";
+import { Grid, Paper, StepButton } from "@mui/material";
 import Button from "@mui/material/Button";
 import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
 import Typography from "@mui/material/Typography";
-
-
 
 import AuthForm from "./Login/AuthForm";
 import OrgForm from "./Org/OrgForm";
 import ResourcesForm from "./Resources/ResourcesForm";
 import SettingsLayout from "./SettingsLayout";
-
 
 export default function SettingsStepper() {
   const { t, i18n } = useTranslation();
@@ -134,7 +125,7 @@ export default function SettingsStepper() {
       spacing={5}
       height="100%"
     >
-      <Grid item xs={10} sm={8} flex={1}>
+      <Grid item xs={10} sm={8} flex={1} sx={{ pt: 5, pl: 5 }}>
         <Stepper nonLinear activeStep={activeStep}>
           {steps.map((step, index) => {
             const stepProps = {};

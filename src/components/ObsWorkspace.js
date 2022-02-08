@@ -72,13 +72,6 @@ function ObsWorkspace({ children, resources }) {
     dragIndicator: {},
   }));
 
-  const useAutoCompleteStyles = makeStyles(() => ({
-    root: {
-      maxWidth: "5rem",
-    },
-  }));
-  const AutoCompleteClasses = useAutoCompleteStyles();
-
   const [layout, setLayout] = useState({
     lg: [
       { w: 3, h: 8, x: 0, y: 0, i: "1" },
@@ -129,10 +122,9 @@ function ObsWorkspace({ children, resources }) {
                 setFrame(0);
                 setStory(newValue);
               }}
-              classes={AutoCompleteClasses}
               id="controllable-states-demo"
               options={stories}
-              sx={{ width: 300 }}
+              sx={{ maxWidth: "5rem" }}
               renderInput={(params) => <TextField {...params} />}
               disableClearable
             />
