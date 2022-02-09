@@ -4,6 +4,7 @@ import useFileContent from "@hooks/repos/useFileContent";
 import useFilesContent from "@hooks/repos/useFilesContent";
 
 function useTwItems({ twlResource, twResource, story, frame }) {
+  
   const path = "/twl_OBS.tsv";
   const [paths, setPaths] = useState([]);
   const {
@@ -11,8 +12,8 @@ function useTwItems({ twlResource, twResource, story, frame }) {
     isLoading: isLoadingWords,
     error: errorLoadingWords,
   } = useFilesContent({
-    owner: twResource.owner.username,
-    repo: twResource.name,
+    owner: twResource?.owner.username,
+    repo: twResource?.name,
     paths,
   });
 
@@ -21,8 +22,8 @@ function useTwItems({ twlResource, twResource, story, frame }) {
     isLoading,
     error,
   } = useFileContent({
-    owner: twlResource.owner.username,
-    repo: twlResource.name,
+    owner: twlResource?.owner.username,
+    repo: twlResource?.name,
     path,
   });
 
@@ -76,11 +77,11 @@ function useTwItems({ twlResource, twResource, story, frame }) {
     data: {
       tw: {
         items: twItems,
-        title: twResource.title,
+        title: twResource?.title,
       },
       twl: {
         items: twlItems,
-        title: twlResource.title,
+        title: twlResource?.title,
       },
     },
   };

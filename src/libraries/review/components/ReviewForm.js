@@ -6,8 +6,12 @@ import {
   DialogContentText,
   DialogTitle,
   Grid,
+  Link,
+  Portal,
+  Snackbar,
   TextField,
 } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import React, { useState } from "react";
 
 import useIssues from "@hooks/api/issues/useIssues";
@@ -21,8 +25,10 @@ export default function ReviewForm({
   authentication,
   preppend,
   addQueries,
-  queryParams = ["check","hint"]
+  queryParams = ["check", "hint"],
 }) {
+  const [openSnack, setOpenSnack] = useState(false);
+  const [alert, setAlert] = useState(null);
   const [formData, setFormData] = useState({
     ...fields,
     ...quote,
@@ -61,9 +67,30 @@ export default function ReviewForm({
         body,
       });
       console.log({ newIssue });
-      if (newIssue.id) onClose();
+      if (newIssue.id) {
+        onClose();
+        setAlert({
+          message: (
+            <>
+              {`Report created successfully\n`}
+              <Button size="small" color="primary" href={newIssue["html_url"]} target="_blank">
+                {"Open report"}
+              </Button>
+            </>
+          ),
+          severity: "success",
+        });
+        setOpenSnack(true);
+      } else {
+        setAlert({
+          message: "Error creating report",
+          severity: "error",
+        });
+        setOpenSnack(true);
+      }
     }
   };
+  const handleCloseSnack = () => setOpenSnack(false);
   return (
     <>
       <Dialog open={open} onClose={onClose}>
@@ -151,6 +178,20 @@ export default function ReviewForm({
           <Button onClick={sendIssue}>Send</Button>
         </DialogActions>
       </Dialog>
+      {alert && openSnack && (
+        <Portal>
+          <Snackbar
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            open={openSnack}
+            autoHideDuration={6000}
+            onClose={handleCloseSnack}
+          >
+            <Alert onClose={handleCloseSnack} severity={alert.severity}>
+              {alert.message}
+            </Alert>
+          </Snackbar>
+        </Portal>
+      )}
     </>
   );
 }

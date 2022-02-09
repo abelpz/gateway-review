@@ -3,7 +3,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
+
+
 import { APP_NAME as appName } from "@common/constants";
+
+
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -13,10 +17,13 @@ import Step from "@mui/material/Step";
 import Stepper from "@mui/material/Stepper";
 import Typography from "@mui/material/Typography";
 
+
+
 import AuthForm from "./Login/AuthForm";
 import OrgForm from "./Org/OrgForm";
 import ResourcesForm from "./Resources/ResourcesForm";
 import SettingsLayout from "./SettingsLayout";
+
 
 export default function SettingsStepper() {
   const { t, i18n } = useTranslation();
@@ -30,6 +37,8 @@ export default function SettingsStepper() {
   const [steps, setSteps] = useState([]);
 
   useEffect(() => {
+    const orgResources = resources.filter((res) => res.owner.id === org.id);
+    const resIds = orgResources.map((res) => res.name.split("_")[1]);
     setSteps([
       {
         label: t("Login"),
@@ -44,7 +53,8 @@ export default function SettingsStepper() {
       {
         label: t("Resources"),
         Component: ResourcesForm,
-        completed: !!resources.filter((res) => res.owner.id === org.id).length,
+        completed:
+          !!orgResources.length && new Set(resIds).size === resIds.length,
       },
     ]);
   }, [auth?.sha1, org?.id, resources, t]);

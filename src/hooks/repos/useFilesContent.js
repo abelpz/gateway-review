@@ -14,13 +14,7 @@ const useFilesContent = ({ owner, repo, paths, branch = "master" }) => {
     token && owner && repo && !!paths?.length && branch
   );
   const reqId = [token, owner, repo, paths, branch].flat().join("_");
-  console.log({
-    owner,
-    repo,
-    paths,
-    branch,
-    hasPaths: !!paths?.length,
-  });
+
   const fetchFiles = async () => {
     const files = await Promise.all(paths.map(
       async (path) =>
