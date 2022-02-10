@@ -1,18 +1,18 @@
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
   Grid,
-  Link,
   Portal,
   Snackbar,
   TextField,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import useIssues from "@hooks/api/issues/useIssues";
 
@@ -29,16 +29,18 @@ export default function ReviewForm({
 }) {
   const [openSnack, setOpenSnack] = useState(false);
   const [alert, setAlert] = useState(null);
-  const [formData, setFormData] = useState({
-    ...fields,
-    ...quote,
-    title: "",
-    comment: "",
-  });
-
-  const { setIssue } = useIssues({ token: authentication.sha1 });
-
-  const sendIssue = async () => {
+  const [formData, setFormData] = useState(null);
+  const { setIssue, isLoading } = useIssues({ token: authentication.sha1 });
+  useEffect(() => {
+    setFormData({
+      ...fields,
+      ...quote,
+      title: "",
+      comment: "",
+    });
+  }, [fields, quote]);
+  console.log({ formData });
+  const sendIssue = useCallback(async () => {
     if (formData.title !== "") {
       const link = formData.quote && formData.link;
       const metaData = !link
@@ -73,7 +75,12 @@ export default function ReviewForm({
           message: (
             <>
               {`Report created successfully\n`}
-              <Button size="small" color="primary" href={newIssue["html_url"]} target="_blank">
+              <Button
+                size="small"
+                color="primary"
+                href={newIssue["html_url"]}
+                target="_blank"
+              >
                 {"Open report"}
               </Button>
             </>
@@ -89,8 +96,10 @@ export default function ReviewForm({
         setOpenSnack(true);
       }
     }
-  };
+  }, [formData, onClose, repo.name, repo.owner.username, setIssue]);
+
   const handleCloseSnack = () => setOpenSnack(false);
+
   return (
     <>
       <Dialog open={open} onClose={onClose}>
@@ -175,7 +184,16 @@ export default function ReviewForm({
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={sendIssue}>Send</Button>
+          <Button onClick={sendIssue} disabled={isLoading} color={"primary"}>
+            {isLoading ? (
+              <>
+                <CircularProgress size="1rem" sx={{ mr: "0.5rem" }} />{" "}
+                {"Loading..."}
+              </>
+            ) : (
+              "Send"
+            )}
+          </Button>
         </DialogActions>
       </Dialog>
       {alert && openSnack && (
