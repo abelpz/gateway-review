@@ -164,7 +164,7 @@ export default function ReviewForm({
                 ...formData,
                 title:
                   preppend !== ""
-                    ? `${preppend}:${e.target.value}`
+                    ? `${preppend} | ${e.target.value}`
                     : e.target.value,
               });
             }}
