@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "translation-helps-rcl/dist/components";
 import { useCardState, useContent } from "translation-helps-rcl/dist/hooks";
 
+
 function ResourceCard({
   cardRef,
   editable = false,
   selectedQuote,
   setQuote,
+  index,
+  setIndex,
   title,
   items = [],
   markdown = null,
@@ -18,7 +21,7 @@ function ResourceCard({
   isLoading,
   classes,
   onItemChange,
-  shouldSetQuoteOnClick = false,
+  shouldSetQuoteOnClick,
   ...props
 }) {
   const {
@@ -31,7 +34,13 @@ function ResourceCard({
     selectedQuote,
     setQuote,
   });
-
+  console.log({ itemIndex, item });
+  // useEffect(() => {
+  //   if (index){
+  //     setItemIndex(index)
+  //   }
+  // }, [index]);
+  
   useEffect(() => {
     if (columnFilters) {
       setFilters(columnFilters);

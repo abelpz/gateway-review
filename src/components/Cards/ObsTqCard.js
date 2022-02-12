@@ -18,6 +18,7 @@ function ObsTqCard({
   classes,
 }) {
   const [auth] = useAppAuth();
+  const [item, setItem] = useState()
   const [cardRef, setCardRef] = useState(null);
   const getRef = useCallback((node) => {
     setCardRef(node);
@@ -25,12 +26,12 @@ function ObsTqCard({
   const path = "/tq_OBS.tsv";
   const repoName = resource.name.split("_");
   const fields = {
-    id: selectedQuote?.ID,
+    id: item?.ID,
     link: `https://tcc-idiomaspuentes.netlify.app/pl/${
       resource.owner.username
-    }/${repoName[0]}/${repoName[1] + path}`,
+    }/${repoName[0]}/${repoName[1] + path}?ID=${item?.ID}`,
   };
-
+  
   const {
     file: content,
     isLoading,
@@ -64,22 +65,23 @@ function ObsTqCard({
   return (
     !error && (
       <>
-        <ResourceCard
-          cardRef={getRef}
-          title={resource.title}
-          filters={["ID", "Question", "Response"]}
-          chapter={story}
-          verse={frame}
-          items={items}
-          selectedQuote={selectedQuote}
-          setQuote={setQuote}
-          viewMode="default"
-          onItemChange={onItemChange}
-          markdown={markdown}
-          languageId="es-419"
-          isLoading={isLoading}
-          classes={classes}
-        />
+          <ResourceCard
+            cardRef={getRef}
+            title={resource.title}
+            filters={["ID", "Question", "Response"]}
+            chapter={story}
+            verse={frame}
+            items={items}
+            selectedQuote={item}
+            setQuote={setItem}
+            viewMode="default"
+            onItemChange={onItemChange}
+            markdown={markdown}
+            languageId="es-419"
+            isLoading={isLoading}
+            classes={classes}
+            shouldSetQuoteOnClick
+          />
         <Reviewer
           preppend="OBS-review"
           fields={fields}
