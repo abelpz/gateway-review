@@ -11,7 +11,7 @@ import useUsersApi from "./api/useUsersApi";
 import useBatchDispatch from "./useBatchDispatch";
 
 export default function useLogin() {
-  const { saveToken } = useSelector((state) => state.settings);
+  const { saveToken } = useSelector((state) => state.settings.options);
   const dispatch = useDispatch();
   const batchDispatch = useBatchDispatch();
   const [username, setUsername] = useState(undefined);
