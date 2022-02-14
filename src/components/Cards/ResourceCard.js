@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "translation-helps-rcl/dist/components";
 import { useCardState, useContent } from "translation-helps-rcl/dist/hooks";
 
-
 function ResourceCard({
   cardRef,
   editable = false,
@@ -22,6 +21,7 @@ function ResourceCard({
   classes,
   onItemChange,
   shouldSetQuoteOnClick,
+  disableNavigation,
   ...props
 }) {
   const {
@@ -34,13 +34,7 @@ function ResourceCard({
     selectedQuote,
     setQuote,
   });
-  console.log({ itemIndex, item });
-  // useEffect(() => {
-  //   if (index){
-  //     setItemIndex(index)
-  //   }
-  // }, [index]);
-  
+
   useEffect(() => {
     if (columnFilters) {
       setFilters(columnFilters);
@@ -77,9 +71,22 @@ function ResourceCard({
     });
   };
 
+  // useEffect(() => {
+  //   console.log({itemIndex});
+  // }, [itemIndex])
+
   useEffect(() => {
-    if (onItemChange) onItemChange({ itemIndex, item });
-  }, [itemIndex, onItemChange, setItemIndex, item]);
+    console.log({ index });
+  }, [index]);
+
+  useEffect(() => {
+    if (index != null) setItemIndex(index);
+  }, [index, setItemIndex]);
+  console.log({ itemIndex, title });
+  // useEffect(() => {
+  //   console.log({itemIndex})
+  //   if (setIndex) setIndex(itemIndex);
+  // }, [itemIndex, setIndex]);
 
   return (
     <Card
@@ -99,6 +106,7 @@ function ResourceCard({
       classes={classes}
       editable={editable}
       {...props}
+      disableNavigation={disableNavigation}
     >
       <CardContent
         item={item}

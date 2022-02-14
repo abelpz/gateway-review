@@ -1,31 +1,17 @@
-import {
-  ThemeProvider,
-  createTheme,
-  makeStyles,
-} from "@material-ui/core/styles";
+import { ThemeProvider, createTheme, makeStyles } from "@material-ui/core/styles";
 import React, { useState } from "react";
 import Workspace from "resource-workspace-rcl/dist/components/Workspace";
 
-import { APP_NAME } from "@common/constants";
 
-import {
-  AppBar,
-  Autocomplete,
-  Box,
-  Button,
-  TextField,
-  Toolbar,
-  Typography,
-} from "@mui/material";
 
-import ObsCard from "./Cards/ObsCard";
-import ObsTaCard from "./Cards/ObsTaCard";
-import ObsTnCard from "./Cards/ObsTnCard";
-import ObsTqCard from "./Cards/ObsTqCard";
-import ObsTwCard from "./Cards/ObsTwCard";
-import ObsTwlCard from "./Cards/ObsTwlCard";
-import useTwItems from "./Cards/useTwItems";
-import useLogout from "@hooks/useLogout";
+import useTwItems from "../../hooks/api/useTwItems";
+import ObsCard from "../Cards/ObsCard";
+import ObsTaCard from "../Cards/ObsTaCard";
+import ObsTnCard from "../Cards/ObsTnCard";
+import ObsTqCard from "../Cards/ObsTqCard";
+import ObsTwCard from "../Cards/ObsTwCard";
+import ObsTwlCard from "../Cards/ObsTwlCard";
+
 
 const workspaceTheme = createTheme({
   palette: {
@@ -45,14 +31,19 @@ const workspaceTheme = createTheme({
   },
 });
 
-const stories = Array.from(Array(50), (e, i) => (i + 1).toString());
-
-function ObsWorkspace({ children, resources }) {
-  const [story, setStory] = useState(stories[0]);
-  const [frame, setFrame] = useState(1);
+function ObsWorkspace({
+  children,
+  resources,
+  story,
+  frame,
+  setFrame,
+  frames,
+  obs,
+  isLoading,
+}) {
   const [selectedQuote, setQuote] = useState({});
   const [selectedWord, setWord] = useState({});
-  console.log(resources);
+
   const useStyles = makeStyles(() => ({
     root: {
       padding: 0,
@@ -84,12 +75,12 @@ function ObsWorkspace({ children, resources }) {
   });
 
   const onOBSChange = ({ itemIndex }) => {
-    setFrame(itemIndex);
+    setFrame(itemIndex?.toString());
   };
 
   const classes = useStyles();
 
-  const { isLoading, isError, data } = useTwItems({
+  const { isLoading: isLoadingTw, isError, data } = useTwItems({
     twlResource: resources.find(
       (resource) => resource.name.split("_")[1] === "obs-twl"
     ),
@@ -99,39 +90,10 @@ function ObsWorkspace({ children, resources }) {
     story,
     frame,
   });
-
-  const logout = useLogout();
-  const handleOnClick = (e) => {
-    logout();
-  };
+  console.log({ isLoadingOBS:isLoading });
 
   return (
     <ThemeProvider theme={workspaceTheme}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">{APP_NAME}</Typography>
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: { xs: "flex", justifyContent: "center", p: 5 },
-            }}
-          >
-            <Autocomplete
-              value={story}
-              onChange={(event, newValue) => {
-                setFrame(0);
-                setStory(newValue);
-              }}
-              id="controllable-states-demo"
-              options={stories}
-              sx={{ maxWidth: "5rem" }}
-              renderInput={(params) => <TextField {...params} />}
-              disableClearable
-            />
-          </Box>
-          <Button onClick={handleOnClick}>Logout</Button>
-        </Toolbar>
-      </AppBar>
       <Workspace
         autoResize={true}
         rowHeight={25}
@@ -163,11 +125,12 @@ function ObsWorkspace({ children, resources }) {
         <ObsCard
           story={story}
           frame={frame}
-          resource={resources.find(
-            (resource) => resource.name.split("_")[1] === "obs"
-          )}
+          setFrame={setFrame}
+          items={frames}
+          resource={obs}
           classes={classes}
           onItemChange={onOBSChange}
+          isLoading={isLoading}
         />
         <ObsTnCard
           story={story}
@@ -200,7 +163,7 @@ function ObsWorkspace({ children, resources }) {
           setQuote={setWord}
           selectedQuote={selectedWord}
           classes={classes}
-          isLoading={isLoading}
+          isLoading={isLoadingTw}
         />
         <ObsTqCard
           story={story}
@@ -220,7 +183,7 @@ function ObsWorkspace({ children, resources }) {
           setQuote={setWord}
           selectedQuote={selectedWord}
           classes={classes}
-          isLoading={isLoading}
+          isLoading={isLoadingTw}
         />
       </Workspace>
     </ThemeProvider>

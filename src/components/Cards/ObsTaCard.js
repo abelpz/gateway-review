@@ -28,7 +28,6 @@ function ObsTaCard({
   const path = useMemo(() => {
     if (selectedQuote?.SupportReference) {
       const ref = selectedQuote.SupportReference?.replace("rc://*/ta/man/", "");
-      console.log({ ref });
       return `/${ref}/01.md`;
     }
     return null;

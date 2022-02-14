@@ -24,7 +24,6 @@ const useAppResources = () => {
     const filteredResources = allResources.filter(
       (resource) => resource.owner.id !== selectedOrg.id
     );
-    console.log({filteredResources})
     const newResources = [...filteredResources, ...resources];
     dispatch(resourcesUpdated(newResources));
   };

@@ -20,7 +20,7 @@ function ObsTwCard({
 }) {
   const [auth] = useAppAuth();
   const [cardRef, setCardRef] = useState(null);
-  console.log(selectedQuote);
+
   const getRef = useCallback((node) => {
     setCardRef(node);
   }, []);

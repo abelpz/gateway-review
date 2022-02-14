@@ -22,7 +22,6 @@ const useFilesContent = ({ owner, repo, paths, branch = "master" }) => {
           .repoGetRawFile(owner, repo, path, branch)
           .then(({ data }) => data)
     ));
-    console.log({ files, paths });
     return files;
   };
 
@@ -35,7 +34,7 @@ const useFilesContent = ({ owner, repo, paths, branch = "master" }) => {
   return {
     files,
     setFiles,
-    isLoading: !error && !files && !token,
+    isLoading: !error && !files && shouldContinue,
     error,
   };
 };

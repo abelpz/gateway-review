@@ -19,7 +19,6 @@ export default function useLogin() {
   const userClient = useUsersApi({ username, password });
 
   const fetchAuth = async (username) => {
-    console.log("running token fetcher");
     const savedState = loadState({ key: TOKEN_ID, user: username });
     const allTokens = await userClient
       .userGetTokens(username)
@@ -64,11 +63,9 @@ export default function useLogin() {
   useEffect(() => {
     if (token?.sha1) dispatch(authAdded(token));
   }, [token, dispatch]);
-  console.log(user);
 
   const fetchUser = () => {
     const user = userClient.userGetCurrent().then(({ data }) => data);
-    console.log(user);
     return user;
   };
 

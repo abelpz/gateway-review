@@ -11,7 +11,6 @@ import useIssuesApi from "@hooks/api/useIssuesApi";
 const useResourcesLabels = ({ token, resources = null }) => {
   const issuesClient = useIssuesApi({ token });
   const fetcher = async (resources) => {
-    console.log("running labels fetcher with resources:", resources);
     const labelsList = resources
       ? await Promise.all(
           resources.map((resource) => {

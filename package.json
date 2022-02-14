@@ -20,6 +20,7 @@
     "@mui/material": "^5.2.3",
     "@mui/styles": "^5.2.3",
     "@reduxjs/toolkit": "^1.7.0",
+    "bible-reference-rcl": "^1.1.0",
     "dcs-js": "^1.0.2",
     "debounce": "^1.2.1",
     "gitea-react-toolkit": "^2.1.0-rc.6",

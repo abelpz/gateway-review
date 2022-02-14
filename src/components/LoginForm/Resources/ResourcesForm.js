@@ -44,7 +44,6 @@ function ResourcesForm() {
     if (!errorMessage && repos) {
       const reposData = repos?.reduce(
         (prev, curr) => {
-          console.log({ prev, curr });
           const repoId = curr.name.split("_")[1];
           if (defaultResources.includes(repoId)) {
             return {
@@ -58,7 +57,6 @@ function ResourcesForm() {
 
         { reposList: [], reposIds: [] }
       );
-      console.log(reposData);
       const { reposList, reposIds } = reposData;
 
       let error = false;
@@ -107,7 +105,6 @@ function ResourcesForm() {
   }, [resources]);
 
   const handleChange = (e, value, reason) => {
-    console.log("Repos to add:", value);
     addResources(value);
   };
   const handleClearResource = (id) => {
