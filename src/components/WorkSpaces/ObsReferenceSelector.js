@@ -30,7 +30,7 @@ export default function ObsReferenceSelector({
   };
   return (
     <>
-      <Button onClick={handlePrev}>
+      <Button onClick={handlePrev} disabled={initialFrame === "0"}>
         <NavigateBeforeIcon></NavigateBeforeIcon>
       </Button>
       <ReferenceText>OBS</ReferenceText>
@@ -54,7 +54,7 @@ export default function ObsReferenceSelector({
         loading={loadingFrames}
         disableClearable
       />
-      <Button onClick={handleNext}>
+      <Button onClick={handleNext} disabled={initialFrame === (frames.length - 1).toString()}>
         <NavigateNextIcon></NavigateNextIcon>
       </Button>
     </>

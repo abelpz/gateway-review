@@ -7,16 +7,17 @@ export default function useStory({ resource, story }) {
   const [items, setItems] = useState(null);
 
   useEffect(() => {
-    setPath(story ? `/content/${story > 9 ? story : "0" + story}.md` : "");
-  }, [story]);
+    if (story && resource?.id)
+      setPath(story ? `/content/${story > 9 ? story : "0" + story}.md` : "");
+  }, [story, resource?.id]);
 
   const {
     file: content,
     isLoading,
     error,
   } = useFileContent({
-    owner: resource.owner.username,
-    repo: resource.name,
+    owner: resource?.owner.username,
+    repo: resource?.name,
     path,
   });
 

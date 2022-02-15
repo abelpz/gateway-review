@@ -26,6 +26,7 @@ const clientSideEmotionCache = createEmotionCache();
 
 function MyApp(props) {
   const { locale } = useRouter();
+  console.log({locale})
   i18n.changeLanguage(locale).then(() => {
     console.log("locale changed to " + locale);
   });

@@ -1,44 +1,41 @@
 import React, { createRef, useMemo, useState } from "react";
-
-
+import { useTranslation } from "react-i18next";
 
 import { APP_NAME } from "@common/constants";
 
-
-
 import ObsReferenceSelector from "@components/WorkSpaces/ObsReferenceSelector";
 import ObsWorkspace from "@components/WorkSpaces/ObsWorkspace";
-
-
 
 import useAppAuth from "@hooks/app/useAppAuth";
 import useAppResources from "@hooks/app/useAppResources";
 import useLogout from "@hooks/useLogout";
 import useStory from "@hooks/useOBS";
+import useReference from "@hooks/useReference";
 
+import {
+  AppBar,
+  Autocomplete,
+  Box,
+  Button,
+  TextField,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 
-
-import { AppBar, Autocomplete, Box, Button, TextField, Toolbar, Typography } from "@mui/material";
-
-
-const createReferences = (lenght, modifier = (i) => i) =>
+const createReferencesList = (lenght, modifier = (i) => i) =>
   Array.from(Array(lenght), (e, i) => modifier(i).toString());
 
 export default function WorkspaceContainer() {
+  const { t, i18n } = useTranslation();
   const [resources] = useAppResources();
   const obsRepo = useMemo(
     () => resources.find((resource) => resource.name.split("_")[1] === "obs"),
     [resources]
   );
 
-  const [workspace, setWorkspace] = useState({
-    story: 1,
-    frame: 10,
-    tnIndex: 3
-  })
+  const [story, setStory, frame, setFrame] = useReference();
 
-  const stories = createReferences(50, (i) => i + 1);
-  const [story, setStory] = useState(workspace.story.toString());
+  const stories = createReferencesList(50, (i) => i + 1);
 
   const { items, isLoading, error } = useStory({
     resource: obsRepo,
@@ -46,12 +43,9 @@ export default function WorkspaceContainer() {
   });
 
   const frames = useMemo(
-    () =>
-      (!!items?.length && createReferences(items?.length)) || ["0"],
+    () => (!!items?.length && createReferencesList(items?.length)) || ["0"],
     [items?.length]
   );
-
-  const [frame, setFrame] = useState(workspace.frame.toString());
 
   const [auth] = useAppAuth();
   const logout = useLogout();
@@ -92,7 +86,7 @@ export default function WorkspaceContainer() {
               loadingFrames={!frames}
             />
           </Box>
-          <Button onClick={handleOnClick}>Logout</Button>
+          <Button onClick={handleOnClick}>{t("Logout")}</Button>
         </Toolbar>
       </AppBar>
       <ObsWorkspace
