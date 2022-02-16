@@ -17,7 +17,8 @@ function ObsTwlCard({
   markdown = null,
   items,
   classes,
-  isLoading
+  isLoading,
+  ...props
 }) {
   return (
     <ResourceCard
@@ -38,6 +39,7 @@ function ObsTwlCard({
       disableFilters
       disableNavigation
       hideMarkdownToggle
+      {...props}
     />
   );
 }

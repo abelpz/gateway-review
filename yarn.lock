@@ -4972,9 +4972,9 @@ tr46@^1.0.1:
     punycode "^2.1.0"
 
 translation-helps-rcl@^3.1.7:
-  version "3.1.7"
-  resolved "https://registry.yarnpkg.com/translation-helps-rcl/-/translation-helps-rcl-3.1.7.tgz#a93db4fb4251df3efc866452a84c444082c8099a"
-  integrity sha512-+HijXJHESP4Tq1vCvlwAEa3P6NJUSqZ5A76UyQMhev1T8EHGeoGoTaHxgzev/opxoTYOrADM+HZvyvb9itGSCw==
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/translation-helps-rcl/-/translation-helps-rcl-3.2.0.tgz#3ee1738bd6167bab318c8f2c1d9c2ded539ecb5d"
+  integrity sha512-tET3t0jFNdzuM2V0VhGlD5POYGBRZ8cYYmAR0gI3NlK0a4vUJZvX/8afN3uWXMGVoIcqNhqlB0yUaGn1nWogmA==
   dependencies:
     axios "^0.21.1"
     deep-equal "^2.0.5"

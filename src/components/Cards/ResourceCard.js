@@ -8,7 +8,6 @@ function ResourceCard({
   selectedQuote,
   setQuote,
   index,
-  setIndex,
   title,
   items = [],
   markdown = null,
@@ -19,10 +18,8 @@ function ResourceCard({
   languageId,
   isLoading,
   classes,
-  onItemChange,
   shouldSetQuoteOnClick,
   disableNavigation,
-  ...props
 }) {
   const {
     state: { item, headers, filters, fontSize, itemIndex, markdownView },
@@ -34,6 +31,15 @@ function ResourceCard({
     selectedQuote,
     setQuote,
   });
+
+  // console.log({
+  //   title,
+  //   items,
+  //   verse,
+  //   chapter,
+  //   selectedQuote,
+  //   setQuote,
+  // });
 
   useEffect(() => {
     if (columnFilters) {
@@ -53,6 +59,8 @@ function ResourceCard({
         ID,
         filePath,
       };
+      console.log({ quote });
+
       setQuote(
         Object.keys(quote).reduce(
           (prev, current) =>
@@ -71,18 +79,9 @@ function ResourceCard({
     });
   };
 
-  // useEffect(() => {
-  //   console.log({itemIndex});
-  // }, [itemIndex])
-
-  useEffect(() => {
-    console.log({ index });
-  }, [index]);
-
   useEffect(() => {
     if (index != null) setItemIndex(index);
   }, [index, setItemIndex]);
-  console.log({ itemIndex, title });
   // useEffect(() => {
   //   console.log({itemIndex})
   //   if (setIndex) setIndex(itemIndex);
@@ -105,7 +104,6 @@ function ResourceCard({
       showSaveChangesPrompt={showSaveChangesPrompt}
       classes={classes}
       editable={editable}
-      {...props}
       disableNavigation={disableNavigation}
     >
       <CardContent

@@ -66,7 +66,7 @@ function useTwItems({ twlResource, twResource, story, frame }) {
       }));
     }
   }, [articles, twlItems, paths]);
-  console.log({ isLoading, isLoadingWords });
+  
   return {
     isLoading: isLoading || isLoadingWords,
     isError: error && errorLoadingWords,

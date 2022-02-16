@@ -10,12 +10,15 @@ const useReference = () => {
     reference.frame,
   ]);
   const setStory = (story) => {
-    dispatch(storyChanged(story));
+    dispatch(storyChanged(story.toString()));
   };
   const setFrame = (frame) => {
-    dispatch(frameChanged(frame));
+    dispatch(frameChanged(frame.toString()));
   };
-  return [story, setStory, frame, setFrame];
+  return {
+    state: { story, frame },
+    actions: { setStory, setFrame },
+  };
 };
 
 export default useReference;

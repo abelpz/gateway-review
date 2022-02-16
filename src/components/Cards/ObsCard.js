@@ -17,6 +17,7 @@ function ObsCard({
   languageId,
   classes,
   isLoading,
+  ...props
 }) {
   const [cardRef, setCardRef] = useState(null);
   const [auth] = useAppAuth();
@@ -52,6 +53,7 @@ function ObsCard({
         classes={classes}
         labels={["type-error", "type-suggestion"]}
         disableNavigation
+        {...props}
       />
       <Reviewer
         preppend="OBS-review"

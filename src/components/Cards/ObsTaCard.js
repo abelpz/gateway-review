@@ -1,8 +1,6 @@
 import Reviewer from "@libraries/review/components/Reviewer";
-import { use } from "i18next";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Card, CardContent } from "translation-helps-rcl/dist/components";
-import { useCardState, useContent } from "translation-helps-rcl/dist/hooks";
+import { useSelector } from "react-redux";
 
 import useAppAuth from "@hooks/app/useAppAuth";
 import useFileContent from "@hooks/repos/useFileContent";
@@ -10,8 +8,6 @@ import useFileContent from "@hooks/repos/useFileContent";
 import ResourceCard from "./ResourceCard";
 
 function ObsTaCard({
-  selectedQuote,
-  setQuote,
   resource,
   story,
   frame,
@@ -19,22 +15,25 @@ function ObsTaCard({
   markdown = null,
   languageId,
   classes,
+  ...props
 }) {
+  const [note] = useSelector(({ reference }) => [reference.note]);
+  console.log({note})
   const [auth] = useAppAuth();
   const [cardRef, setCardRef] = useState(null);
   const getRef = useCallback((node) => {
     setCardRef(node);
   }, []);
   const path = useMemo(() => {
-    if (selectedQuote?.SupportReference) {
-      const ref = selectedQuote.SupportReference?.replace("rc://*/ta/man/", "");
+    if (note?.SupportReference) {
+      const ref = note.SupportReference?.replace("rc://*/ta/man/", "");
       return `/${ref}/01.md`;
     }
     return null;
-  }, [selectedQuote]);
+  }, [note]);
   const repoName = resource.name.split("_");
   const fields = {
-    id: selectedQuote?.SupportReference,
+    id: note?.SupportReference,
     link: `https://tcc-idiomaspuentes.netlify.app/pl/${
       resource.owner.username
     }/${repoName[0]}/${repoName[1] + path}`,
@@ -61,12 +60,12 @@ function ObsTaCard({
           chapter={story}
           verse={frame}
           items={items}
-          onItemChange={onItemChange}
           markdown={markdown}
           viewMode="markdown"
           languageId="es-419"
           isLoading={isLoading}
           classes={classes}
+          {...props}
         />
         <Reviewer
           preppend="OBS-review"

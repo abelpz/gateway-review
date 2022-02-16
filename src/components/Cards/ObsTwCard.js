@@ -17,6 +17,7 @@ function ObsTwCard({
   items,
   classes,
   isLoading,
+  ...props
 }) {
   const [auth] = useAppAuth();
   const [cardRef, setCardRef] = useState(null);
@@ -27,7 +28,7 @@ function ObsTwCard({
   const repoName = resource.name.split("_");
   const fields = {
     TWLink: selectedQuote?.TWLink,
-    link: `https://tcc-idiomaspuentes.netlify.app/pl/${resource.owner.username}/${repoName[0]}/${repoName[1]}/${selectedQuote.filePath}`,
+    link: `https://tcc-idiomaspuentes.netlify.app/pl/${resource.owner.username}/${repoName[0]}/${repoName[1]}/${selectedQuote?.filePath}`,
   };
   return (
     <>
@@ -46,6 +47,7 @@ function ObsTwCard({
         isLoading={isLoading}
         classes={classes}
         shouldSetQuoteOnClick
+        {...props}
       />
       <Reviewer
         preppend="OBS-review"
