@@ -14,7 +14,7 @@ import {
 import { Alert } from "@material-ui/lab";
 import React, { useCallback, useEffect, useState } from "react";
 
-import useIssues from "@hooks/api/issues/useIssues";
+import useRepoIssues from "@hooks/api/issues/useRepoIssues";
 
 export default function ReviewForm({
   fields,
@@ -30,7 +30,7 @@ export default function ReviewForm({
   const [openSnack, setOpenSnack] = useState(false);
   const [alert, setAlert] = useState(null);
   const [formData, setFormData] = useState(null);
-  const { setIssue, isLoading } = useIssues({ token: authentication.sha1 });
+  const { setIssue, isLoading } = useRepoIssues({ token: authentication.sha1 });
   useEffect(() => {
     setFormData({
       ...fields,
