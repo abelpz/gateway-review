@@ -1,25 +1,26 @@
 import Reviewer from "@libraries/review/components/Reviewer";
-import { use } from "i18next";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Card, CardContent } from "translation-helps-rcl/dist/components";
-import { useCardState, useContent } from "translation-helps-rcl/dist/hooks";
+import { useDispatch, useSelector } from "react-redux";
 
 import useAppAuth from "@hooks/app/useAppAuth";
 import useFileContent from "@hooks/repos/useFileContent";
 
+import { noteChanged } from "@store/slices/reference";
+
 import ResourceCard from "./ResourceCard";
 
 function ObsTnCard({
-  selectedQuote,
-  setQuote,
   resource,
   story,
   frame,
-  onItemChange,
   markdown = null,
   languageId,
   classes,
+  ...props
 }) {
+  const dispatch = useDispatch();
+  const note = useSelector(({ reference }) => reference.note);
+
   const [auth] = useAppAuth();
   const [cardRef, setCardRef] = useState(null);
   const getRef = useCallback((node) => {
@@ -28,10 +29,10 @@ function ObsTnCard({
   const repoName = resource.name.split("_");
   const path = "/tn_OBS.tsv";
   const fields = {
-    id: selectedQuote?.ID,
+    id: note?.ID,
     link: `https://tcc-idiomaspuentes.netlify.app/pl/${
       resource.owner.username
-    }/${repoName[0]}/${repoName[1] + path}?ID=${selectedQuote?.ID}`,
+    }/${repoName[0]}/${repoName[1] + path}?ID=${note?.ID}`,
   };
 
   const {
@@ -64,18 +65,24 @@ function ObsTnCard({
     }
   }, [frame, notes, story]);
 
+  const setNote = useCallback(
+    (note) => dispatch(noteChanged(note)),
+    [dispatch]
+  );
+  console.log({ setNote });
+
   return (
     !error && (
       <>
         <ResourceCard
+          {...props}
           cardRef={getRef}
           title={resource.title}
           chapter={story}
           verse={frame}
           items={items}
-          selectedQuote={selectedQuote}
-          setQuote={setQuote}
-          onItemChange={onItemChange}
+          selectedQuote={note}
+          setQuote={setNote}
           markdown={markdown}
           languageId="es-419"
           isLoading={isLoading}

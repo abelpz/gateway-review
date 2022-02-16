@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "translation-helps-rcl/dist/components";
 import { useCardState, useContent } from "translation-helps-rcl/dist/hooks";
 
-
 function ResourceCard({
   cardRef,
   editable = false,
   selectedQuote,
   setQuote,
   index,
-  setIndex,
   title,
   items = [],
   markdown = null,
@@ -20,9 +18,8 @@ function ResourceCard({
   languageId,
   isLoading,
   classes,
-  onItemChange,
   shouldSetQuoteOnClick,
-  ...props
+  disableNavigation,
 }) {
   const {
     state: { item, headers, filters, fontSize, itemIndex, markdownView },
@@ -34,13 +31,16 @@ function ResourceCard({
     selectedQuote,
     setQuote,
   });
-  console.log({ itemIndex, item });
-  // useEffect(() => {
-  //   if (index){
-  //     setItemIndex(index)
-  //   }
-  // }, [index]);
-  
+
+  // console.log({
+  //   title,
+  //   items,
+  //   verse,
+  //   chapter,
+  //   selectedQuote,
+  //   setQuote,
+  // });
+
   useEffect(() => {
     if (columnFilters) {
       setFilters(columnFilters);
@@ -59,6 +59,8 @@ function ResourceCard({
         ID,
         filePath,
       };
+      console.log({ quote });
+
       setQuote(
         Object.keys(quote).reduce(
           (prev, current) =>
@@ -78,8 +80,12 @@ function ResourceCard({
   };
 
   useEffect(() => {
-    if (onItemChange) onItemChange({ itemIndex, item });
-  }, [itemIndex, onItemChange, setItemIndex, item]);
+    if (index != null) setItemIndex(index);
+  }, [index, setItemIndex]);
+  // useEffect(() => {
+  //   console.log({itemIndex})
+  //   if (setIndex) setIndex(itemIndex);
+  // }, [itemIndex, setIndex]);
 
   return (
     <Card
@@ -98,7 +104,7 @@ function ResourceCard({
       showSaveChangesPrompt={showSaveChangesPrompt}
       classes={classes}
       editable={editable}
-      {...props}
+      disableNavigation={disableNavigation}
     >
       <CardContent
         item={item}

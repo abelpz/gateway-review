@@ -1,14 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 
-
-
-import { resourceRemoved, resourcesUpdated } from "@store/slices/sources";
 import useLabels from "@hooks/useLabels";
 
+import { resourceRemoved, resourcesUpdated } from "@store/slices/sources";
 
 const useAppResources = () => {
   const dispatch = useDispatch();
-  
+
   const [token, selectedOrg, resources, allResources] = useSelector(
     ({ settings, sources }) => {
       const token = settings.auth;
@@ -24,7 +22,6 @@ const useAppResources = () => {
     const filteredResources = allResources.filter(
       (resource) => resource.owner.id !== selectedOrg.id
     );
-    console.log({filteredResources})
     const newResources = [...filteredResources, ...resources];
     dispatch(resourcesUpdated(newResources));
   };

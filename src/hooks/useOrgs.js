@@ -3,7 +3,6 @@ import useSWR from "swr";
 import useOrgApi from "@hooks/api/useOrgApi";
 
 const useOrgs = (token) => {
-  console.log({token})
   const orgClient = useOrgApi({token});
   
   const fetchOrgs = async () => {

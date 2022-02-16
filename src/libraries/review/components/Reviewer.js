@@ -36,7 +36,6 @@ export default function Reviewer({ target, fields = {}, authentication, org, rep
 
   useEffect(() => {
     if (target) {
-      console.log({ target });
       const onContextMenu = (event) => {
         const selection = window.getSelection();
         if (!selection.isCollapsed) {
@@ -66,7 +65,6 @@ export default function Reviewer({ target, fields = {}, authentication, org, rep
       };
     }
   }, [target, position]);
-  console.log({ issueQuote });
 
   return issueQuote ? (
     <ContextMenu

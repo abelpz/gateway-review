@@ -3,30 +3,33 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
-
-
-import { PASSWORD_RECOVERY_LINK, SIGNUP_LINK, TOKEN_ID } from "@common/constants";
-
-
+import {
+  PASSWORD_RECOVERY_LINK,
+  SIGNUP_LINK,
+  TOKEN_ID,
+} from "@common/constants";
 
 import SettingsForm from "@components/LoginForm/SettingsForm";
-
-
 
 import useLogin from "@hooks/useLogin";
 import useLogout from "@hooks/useLogout";
 
-
-
 import { settingsAdded } from "@store/slices/settings";
-
-
 
 import PersonIcon from "@mui/icons-material/Person";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
-import { Button, Checkbox, CircularProgress, FormControlLabel, InputAdornment, Link, Stack, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  CircularProgress,
+  FormControlLabel,
+  InputAdornment,
+  Link,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
-
 
 /**
  * @callback handleOnChange
@@ -56,11 +59,11 @@ function AuthForm({ handleOnChange, ...props }) {
 
   useEffect(() => {
     if (!!newToken && handleOnChange) {
-      console.log('New token found:',{ newToken: newToken.sha1 });
+      console.log("New token found:", { newToken: newToken.sha1 });
       handleOnChange();
-    };
+    }
   }, [newToken, handleOnChange]);
-  
+
   const [disabled, setDisabled] = useState();
 
   useEffect(() => {
@@ -105,7 +108,7 @@ function AuthForm({ handleOnChange, ...props }) {
         errorMessage={t("Something went wrong, please try again.")}
       >
         <TextField
-          sx={{my:1}}
+          sx={{ my: 1 }}
           required
           disabled={disabled}
           id="name"
@@ -128,7 +131,7 @@ function AuthForm({ handleOnChange, ...props }) {
           }}
         />
         <TextField
-          sx={{my:1}}
+          sx={{ my: 1 }}
           required
           disabled={disabled}
           id="password"

@@ -39,7 +39,6 @@ export default function ReviewForm({
       comment: "",
     });
   }, [fields, quote]);
-  console.log({ formData });
   const sendIssue = useCallback(async () => {
     if (formData.title !== "") {
       const link = formData.quote && formData.link;
@@ -53,14 +52,11 @@ export default function ReviewForm({
                 `check=${formData.quote}&hint=${formData.title}`
             ),
           };
-      console.log({ metaData });
-
       const body = Object.keys(metaData).reduce((prev, current) => {
         if (current === "title") return prev;
         const title = current.charAt(0).toUpperCase() + current.slice(1);
         return prev + `**${title}:**\n${metaData[current]}\n`;
       }, `### ${metaData.title}\n\n`);
-      console.log({ body });
 
       const newIssue = await setIssue({
         title: metaData.title,
@@ -68,7 +64,6 @@ export default function ReviewForm({
         repo: repo.name,
         body,
       });
-      console.log({ newIssue });
       if (newIssue.id) {
         onClose();
         setAlert({

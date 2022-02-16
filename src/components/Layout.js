@@ -9,7 +9,7 @@ export default function Layout({ children }) {
         <title>{APP_NAME}</title>
         <meta
           name="description"
-          content="POC of handling DCS issues with react"
+          content="Review the OBS Book Package"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>

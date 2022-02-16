@@ -16,6 +16,7 @@ function ObsTqCard({
   markdown = null,
   languageId,
   classes,
+  ...props
 }) {
   const [auth] = useAppAuth();
   const [item, setItem] = useState()
@@ -80,7 +81,8 @@ function ObsTqCard({
             languageId="es-419"
             isLoading={isLoading}
             classes={classes}
-            shouldSetQuoteOnClick
+          shouldSetQuoteOnClick
+          {...props}
           />
         <Reviewer
           preppend="OBS-review"

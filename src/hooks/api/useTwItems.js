@@ -4,7 +4,6 @@ import useFileContent from "@hooks/repos/useFileContent";
 import useFilesContent from "@hooks/repos/useFilesContent";
 
 function useTwItems({ twlResource, twResource, story, frame }) {
-  
   const path = "/twl_OBS.tsv";
   const [paths, setPaths] = useState([]);
   const {
@@ -57,22 +56,19 @@ function useTwItems({ twlResource, twResource, story, frame }) {
         : []
     );
   }, [twlItems]);
-  console.log({ paths });
 
   const twItems = useMemo(() => {
     if (twlItems && articles) {
       return twlItems.map((word, idx) => ({
         ...word,
         markdown: articles && articles[idx],
-        filePath: paths && paths[idx]
+        filePath: paths && paths[idx],
       }));
     }
   }, [articles, twlItems, paths]);
-
-  console.log({ twItems, twlItems });
-
+  
   return {
-    isLoading: isLoading && isLoadingWords,
+    isLoading: isLoading || isLoadingWords,
     isError: error && errorLoadingWords,
     data: {
       tw: {
