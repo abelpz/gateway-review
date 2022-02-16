@@ -1,3 +1,4 @@
+import ReviewNotifications from "@libraries/review/ReviewNotifications";
 import React, { createRef, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -110,12 +111,13 @@ export default function WorkspaceContainer() {
               loadingFrames={!frames}
             />
           </Box>
+          <ReviewNotifications authentication={auth}></ReviewNotifications>
           <Button onClick={handleOnClick}>{t("Logout")}</Button>
         </Toolbar>
       </AppBar>
 
       <Grid container spacing={2} mt="0rem">
-        <Grid item xs={12} sm={"auto"}  pl={"1rem"}>
+        <Grid item xs={12} sm={"auto"} pl={"1rem"}>
           <Tabs
             orientation={isSmall ? "horizontal" : "vertical"}
             variant={isSmall ? "fullWidth" : "scrollable"}
