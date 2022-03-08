@@ -8,4 +8,12 @@ module.exports = {
     // a non-locale prefixed path e.g. `/hello`
     defaultLocale: "en",
   },
+  async rewrites() {
+    return [
+      {
+        source: "/pl/:path*",
+        destination: "/",
+      },
+    ];
+  },
 };

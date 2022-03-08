@@ -1,31 +1,16 @@
-import ReviewNotifications from "@libraries/review/ReviewNotifications";
-import React, { createRef, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useMemo } from "react";
 
-import { APP_NAME } from "@common/constants";
-
+import AppNav from "@components/Main/AppNav";
 import ObsReferenceSelector from "@components/WorkSpaces/ObsReferenceSelector";
 import ObsWorkspace from "@components/WorkSpaces/ObsWorkspace";
 
 import useAppAuth from "@hooks/app/useAppAuth";
 import useAppResources from "@hooks/app/useAppResources";
-import useLogout from "@hooks/useLogout";
 import useStory from "@hooks/useOBS";
 import useReference from "@hooks/useReference";
 import useWorkspaces from "@hooks/useWorkspaces";
 
-import {
-  AppBar,
-  Autocomplete,
-  Box,
-  Button,
-  Grid,
-  Tab,
-  Tabs,
-  TextField,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, Tab, Tabs } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
@@ -37,13 +22,12 @@ export default function WorkspaceContainer() {
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { workspaces, current, setCurrent } = useWorkspaces();
-  const { t, i18n } = useTranslation();
   const [resources] = useAppResources();
   const obsRepo = useMemo(
     () => resources.find((resource) => resource.name.split("_")[1] === "obs"),
     [resources]
   );
-  console.log({ workspaces });
+
   const {
     state: { story, frame },
     actions: { setStory, setFrame },
@@ -62,7 +46,6 @@ export default function WorkspaceContainer() {
   );
 
   const [auth] = useAppAuth();
-  const logout = useLogout();
 
   const onChangeStory = (event, newValue) => {
     console.log({ newStory: newValue });
@@ -73,10 +56,6 @@ export default function WorkspaceContainer() {
   const onChangeFrame = (event, newValue) => {
     console.log({ newFrame: newValue });
     setFrame(newValue);
-  };
-
-  const handleOnClick = (e) => {
-    logout();
   };
 
   function a11yProps(index) {
@@ -92,29 +71,24 @@ export default function WorkspaceContainer() {
 
   return (
     <>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">{APP_NAME}</Typography>
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: { xs: "flex", justifyContent: "center", p: 5 },
-            }}
-          >
-            <ObsReferenceSelector
-              initialStory={story}
-              initialFrame={frame}
-              stories={stories}
-              onChangeStory={onChangeStory}
-              frames={frames}
-              onChangeFrame={onChangeFrame}
-              loadingFrames={!frames}
-            />
-          </Box>
-          <ReviewNotifications authentication={auth}></ReviewNotifications>
-          <Button onClick={handleOnClick}>{t("Logout")}</Button>
-        </Toolbar>
-      </AppBar>
+      <AppNav>
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: { xs: "flex", justifyContent: "center"},
+          }}
+        >
+          <ObsReferenceSelector
+            initialStory={story}
+            initialFrame={frame}
+            stories={stories}
+            onChangeStory={onChangeStory}
+            frames={frames}
+            onChangeFrame={onChangeFrame}
+            loadingFrames={!frames}
+          />
+        </Box>
+      </AppNav>
 
       <Grid container spacing={2} mt="0rem">
         <Grid item xs={12} sm={"auto"} pl={"1rem"}>

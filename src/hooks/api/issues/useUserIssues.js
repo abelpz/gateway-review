@@ -8,7 +8,6 @@ function useUserIssues({
   token,
   args = {},
 }) {
-  console.log({ token, args });
   const issuesClient = useIssuesApi({ token });
   const { data, error, mutate } = useSWR(
     token && [token, "user/issues"],
@@ -30,23 +29,6 @@ function useUserIssues({
         limit,
         options,
       } = args;
-      console.log({
-        state,
-        labels,
-        milestones,
-        q,
-        priorityRepoId,
-        type,
-        since,
-        before,
-        assigned,
-        created,
-        mentioned,
-        reviewRequested,
-        page,
-        limit,
-        options,
-      });
       return issuesClient
         .issueSearchIssues(
           state,
