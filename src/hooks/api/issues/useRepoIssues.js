@@ -6,28 +6,33 @@ import useIssuesApi from "../useIssuesApi";
 function useRepoIssues({
   resource,
   token,
-  args: {
-    state = undefined,
-    labels = undefined,
-    q = undefined,
-    type = undefined,
-    milestones = undefined,
-    since = undefined,
-    before = undefined,
-    createdBy = undefined,
-    assignedBy = undefined,
-    mentionedBy = undefined,
-    page = undefined,
-    limit = undefined,
-    options = undefined,
-  } = {},
+  args = {},
+  paged = false,
 }) {
   const issuesClient = useIssuesApi({ token });
   const [isLoading, setIsLoading] = useState(false);
-  const { data, error, mutate } = useSWR(
-    !!resource && [resource.owner.username, resource.name],
-    async (owner, repo) => {
-      const {
+
+  function fetcher(owner, repo, defaultPage) {
+    const {
+      state,
+      labels,
+      q,
+      type,
+      milestones,
+      since,
+      before,
+      createdBy,
+      assignedBy,
+      mentionedBy,
+      limit,
+      options,
+    } = args;
+
+    const page = defaultPage ?? args.page;
+    const issues = issuesClient
+      .issueListIssues(
+        owner,
+        repo,
         state,
         labels,
         q,
@@ -40,27 +45,35 @@ function useRepoIssues({
         mentionedBy,
         page,
         limit,
-        options,
-      } = args;
-      return await issuesClient
-        .issueListIssues(
-          owner,
-          repo,
-          state,
-          labels,
-          q,
-          type,
-          milestones,
-          since,
-          before,
-          createdBy,
-          assignedBy,
-          mentionedBy,
-          page,
-          limit,
-          options
-        )
-        .then(({ data }) => data);
+        options
+      )
+      .then(({ data }) => data)
+      .catch((reason) => console.error(reason));
+
+    return issues;
+  }
+
+  function paginated_fetch(owner, repo, page = 1, previousResponse = []) {
+    return fetcher(owner, repo, page).then((newResponse) => {
+      const response = [...previousResponse, ...newResponse]; // Combine the two arrays
+
+      if (newResponse.length !== 0) {
+        page++;
+
+        return paginated_fetch(owner, repo, page, response);
+      }
+
+      return response;
+    });
+  }
+
+  const { data, error, mutate } = useSWR(
+    !!resource && [resource.owner.username, resource.name, paged],
+    async (owner, repo, paged) => {
+      if (!paged) {
+        return await paginated_fetch(owner, repo);
+      }
+      return await fetcher(owner, repo);
     }
   );
 
@@ -76,6 +89,11 @@ function useRepoIssues({
       .then(({ data }) => {
         setIsLoading(false);
         return data;
+      })
+      .catch((reason) => {
+        console.error(reason);
+        setIsLoading(false);
+        return reason;
       });
     //TODO: mutate issues fetched by SWR
     return issue;
